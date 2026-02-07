@@ -2,6 +2,7 @@ import {
   GoogleSignin,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
+import auth from "@react-native-firebase/auth";
 
 GoogleSignin.configure({
   webClientId:
@@ -12,13 +13,18 @@ export async function signInWithGoogle() {
   try {
     await GoogleSignin.hasPlayServices();
     const response = await GoogleSignin.signIn();
-    const idToken = response.data?.idToken;
+    const googleIdToken = response.data?.idToken;
 
-    if (!idToken) {
-      throw new Error("No ID token returned");
+    if (!googleIdToken) {
+      throw new Error("No ID token returned from Google");
     }
 
-    return idToken;
+    const googleCredential = auth.GoogleAuthProvider.credential(googleIdToken);
+    const firebaseUser = await auth().signInWithCredential(googleCredential);
+
+    const firebaseIdToken = await firebaseUser.user.getIdToken();
+
+    return firebaseIdToken;
   } catch (error: any) {
     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
       console.log("User cancelled sign-in");
