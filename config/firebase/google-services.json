@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "99320420058",
+    "project_id": "autoreel-a4444reel",
+    "storage_bucket": "autoreel-a4444reel.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:99320420058:android:3bcfbfaf1813be8903b7e3",
+        "android_client_info": {
+          "package_name": "com.syazah.autoreel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "99320420058-sniobca75ssbd1j2r3b54f1s8pvj5esi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsroQ6E0Tioo2m6JK7FvojYzN6Ja_jQNs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "99320420058-o5v6ltlem3vbrmdmvl1p7k4gklk6k2tn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "99320420058-op805k7a1kiru0fao7fkgtn509rl3em8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.syazah.autoreel"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
