@@ -6,10 +6,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#2B2A2A",
-        secondary: "#2845D6",
-        light: "#F5F2F2",
-        tertiary: "#FEB05D",
+        primary: "#222222",
+        secondary: "#FF6D1F",
+        light: "#FAF3E1",
+        tertiary: "#F5E7C6",
       },
       fontFamily: {
         roboto: ["Roboto_400Regular"],
