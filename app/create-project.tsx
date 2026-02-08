@@ -8,6 +8,7 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, {
@@ -19,6 +20,8 @@ import Animated, {
 import { router } from "expo-router";
 import ScrollWheelPicker from "../components/create-project/ScrollWheelPicker";
 import { Category } from "../types/Project";
+import { v4 as uuidv4 } from 'uuid';
+import api from "../config/axios";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -56,8 +59,19 @@ export default function CreateProject() {
     categoryColorIndex.value = withTiming(idx, { duration: 300 });
   }, [categoryColorIndex]);
 
-  const handleCreate = useCallback(() => {
-    console.log(frequency, category, projectName);
+  const handleCreate = useCallback(async () => {
+    const projectData = {
+      frequency,
+      category,
+      name: projectName.trim(),
+      id: uuidv4(),
+    }
+    const response = await api.post('/api/v1/project/create', projectData);
+    const { data } = response.data;
+    if (!data.success) {
+      return Alert.alert("Project Creation Failed", "Unable to create project. Please try again.")
+    }
+    Alert.alert("Project Created", `Your project ${projectName.trim()} has been created successfully.`);
     router.back();
   }, [frequency, category, projectName]);
 
