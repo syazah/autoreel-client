@@ -20,7 +20,6 @@ import Animated, {
 import { router } from "expo-router";
 import ScrollWheelPicker from "../components/create-project/ScrollWheelPicker";
 import { Category } from "../types/Project";
-import { v4 as uuidv4 } from 'uuid';
 import api from "../config/axios";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -64,11 +63,9 @@ export default function CreateProject() {
       frequency,
       category,
       name: projectName.trim(),
-      id: uuidv4(),
     }
     const response = await api.post('/api/v1/project/create', projectData);
-    const { data } = response.data;
-    if (!data.success) {
+    if (!response.data.success) {
       return Alert.alert("Project Creation Failed", "Unable to create project. Please try again.")
     }
     Alert.alert("Project Created", `Your project ${projectName.trim()} has been created successfully.`);
