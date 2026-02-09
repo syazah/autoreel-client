@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useProjectStore } from '../../store/projectStore'
 import AntDesign from '@expo/vector-icons/AntDesign'
 import CreateStoryModal from '../../components/project/CreateStoryModal'
+import PromptsTab, { type PromptsTabRef } from '../../components/project/PromptsTab'
 import Animated, {
     useSharedValue,
     useAnimatedScrollHandler,
@@ -26,6 +27,7 @@ const Project = () => {
     const scrollX = useSharedValue(0)
     const [activeTab, setActiveTab] = useState(0)
     const [storyModalVisible, setStoryModalVisible] = useState(false)
+    const promptsTabRef = useRef<PromptsTabRef>(null)
 
     const updateActiveTab = useCallback((x: number) => {
         const index = Math.round(x / SCREEN_WIDTH)
@@ -101,10 +103,16 @@ const Project = () => {
                 className="flex-1"
             >
                 {TABS.map((tab) => (
-                    <View key={tab} style={{ width: SCREEN_WIDTH }} className="flex-1 items-center justify-center px-5">
-                        <Text className="text-light/30 font-roboto-medium text-base mt-3">
-                            No {tab.toLowerCase()} yet
-                        </Text>
+                    <View key={tab} style={{ width: SCREEN_WIDTH }} className="flex-1">
+                        {tab === 'Prompts' && project ? (
+                            <PromptsTab ref={promptsTabRef} projectId={project.id} />
+                        ) : (
+                            <View className="flex-1 items-center justify-center px-5">
+                                <Text className="text-light/30 font-roboto-medium text-base mt-3">
+                                    No {tab.toLowerCase()} yet
+                                </Text>
+                            </View>
+                        )}
                     </View>
                 ))}
             </Animated.ScrollView>
@@ -123,6 +131,7 @@ const Project = () => {
                 <CreateStoryModal
                     visible={storyModalVisible}
                     onClose={() => setStoryModalVisible(false)}
+                    onStoryCreated={() => promptsTabRef.current?.refresh()}
                     project={project}
                 />
             )}

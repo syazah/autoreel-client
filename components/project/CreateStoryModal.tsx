@@ -18,10 +18,11 @@ import type { Project } from '../../types/Project'
 type CreateStoryModalProps = {
     visible: boolean
     onClose: () => void
+    onStoryCreated?: () => void
     project: Project
 }
 
-export default function CreateStoryModal({ visible, onClose, project }: CreateStoryModalProps) {
+export default function CreateStoryModal({ visible, onClose, onStoryCreated, project }: CreateStoryModalProps) {
     const [prompt, setPrompt] = useState('')
     const [loading, setLoading] = useState(false)
     const bottomOffset = useSharedValue(0)
@@ -63,6 +64,7 @@ export default function CreateStoryModal({ visible, onClose, project }: CreateSt
                 Alert.alert('Script Created', 'Your story script has been generated successfully.')
                 setPrompt('')
                 onClose()
+                onStoryCreated?.()
             } else {
                 Alert.alert('Error', 'Failed to create script. Please try again.')
             }
@@ -71,7 +73,7 @@ export default function CreateStoryModal({ visible, onClose, project }: CreateSt
         } finally {
             setLoading(false)
         }
-    }, [prompt, project, onClose])
+    }, [prompt, project, onClose, onStoryCreated])
 
     const handleClose = useCallback(() => {
         if (loading) return
