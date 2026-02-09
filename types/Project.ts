@@ -7,3 +7,8 @@ export type Project = {
   category: Category;
   createdAt: number;
 };
+
+export type ProjectState = {
+  project: Project | null;
+  setProject: (project: Project) => void;
+}

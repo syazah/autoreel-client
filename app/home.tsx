@@ -7,6 +7,7 @@ import api from '../config/axios'
 import Entypo from '@expo/vector-icons/Entypo';
 import { FlashList } from '@shopify/flash-list'
 import type { Project } from '../types/Project'
+import { useProjectStore } from '../store/projectStore'
 
 const CATEGORY_COLORS: Record<string, string> = {
     Children: "#FFB6C1",
@@ -23,10 +24,14 @@ const CATEGORY_ICONS: Record<string, string> = {
 function ProjectCard({ project }: { project: Project }) {
     const bgColor = CATEGORY_COLORS[project.category] || "#E5E7EB";
     const iconName = CATEGORY_ICONS[project.category] || "folder";
-
+    const { setProject } = useProjectStore()
     return (
         <TouchableOpacity
             activeOpacity={0.8}
+            onPress={() => {
+                setProject(project)
+                router.push(`/project/${project.id}`)
+            }}
             className="mb-3 rounded-2xl overflow-hidden"
             style={{ backgroundColor: bgColor }}
         >
