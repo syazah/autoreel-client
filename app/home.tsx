@@ -6,7 +6,10 @@ import { useAuthStore } from '../store/authStore'
 import api from '../config/axios'
 import Entypo from '@expo/vector-icons/Entypo';
 import { FlashList } from '@shopify/flash-list'
+import { z } from 'zod'
+import { ProjectSchema } from '../types/Project'
 import type { Project } from '../types/Project'
+import { UserSchema } from '../types/User'
 import { useProjectStore } from '../store/projectStore'
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -72,8 +75,10 @@ const Home = () => {
             if (!data.user) {
                 Alert.alert("User Details Not Found", "No user data found. Please try again.")
             }
-            setUser(data.user)
-            setProjects(data.projects || [])
+            const user = UserSchema.parse(data.user)
+            const projects = data.projects ? z.array(ProjectSchema).parse(data.projects) : []
+            setUser(user)
+            setProjects(projects)
         } catch (error) {
             if (error instanceof Error) {
                 Alert.alert("User Details Not Found", error.message)

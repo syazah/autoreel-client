@@ -19,7 +19,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { router } from "expo-router";
 import ScrollWheelPicker from "../components/create-project/ScrollWheelPicker";
-import { Category } from "../types/Project";
+import { ProjectSchema } from "../types/Project";
+import type { Category } from "../types/Project";
 import api from "../config/axios";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -68,6 +69,7 @@ export default function CreateProject() {
     if (!response.data.success) {
       return Alert.alert("Project Creation Failed", "Unable to create project. Please try again.")
     }
+    ProjectSchema.parse(response.data.data.project);
     Alert.alert("Project Created", `Your project ${projectName.trim()} has been created successfully.`);
     router.back();
   }, [frequency, category, projectName]);

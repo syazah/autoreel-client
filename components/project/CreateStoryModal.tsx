@@ -13,6 +13,7 @@ import {
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
 import AntDesign from '@expo/vector-icons/AntDesign'
 import api from '../../config/axios'
+import { StorySchema } from '../../types/Story'
 import type { Project } from '../../types/Project'
 
 type CreateStoryModalProps = {
@@ -61,6 +62,7 @@ export default function CreateStoryModal({ visible, onClose, onStoryCreated, pro
             })
 
             if (response.data.success) {
+                StorySchema.parse(response.data.data.story)
                 Alert.alert('Script Created', 'Your story script has been generated successfully.')
                 setPrompt('')
                 onClose()

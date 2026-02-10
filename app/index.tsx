@@ -8,6 +8,7 @@ import { ENV } from "../config/env";
 import * as SecureStore from 'expo-secure-store';
 import { useAuthStore } from "../store/authStore";
 import { router } from "expo-router";
+import { UserSchema } from "../types/User";
 
 export default function Index() {
   const { setUser } = useAuthStore();
@@ -35,7 +36,8 @@ export default function Index() {
       }
       await SecureStore.setItemAsync(ENV.ACCESS_TOKEN_KEY, data.accessToken);
       await SecureStore.setItemAsync(ENV.REFRESH_TOKEN_KEY, data.refreshToken);
-      setUser(data.user);
+      const user = UserSchema.parse(data.user);
+      setUser(user);
       return router.replace("/home")
     } catch (err) {
       Alert.alert("Sign in failed", err instanceof Error ? err.message : "Something went wrong. Please try again.");

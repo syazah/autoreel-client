@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useImperativeHandle, forwardRef } from 'react'
 import { View, Text, ActivityIndicator, FlatList, RefreshControl } from 'react-native'
 import api from '../../config/axios'
+import { z } from 'zod'
+import { StorySchema } from '../../types/Story'
 import type { Story } from '../../types/Story'
 import StoryCard from './StoryCard'
 
@@ -26,7 +28,8 @@ export default forwardRef<PromptsTabRef, PromptsTabProps>(function PromptsTab({ 
                 params: { projectId },
             })
             if (response.data.success) {
-                setStories(response.data.data.stories)
+                const stories = z.array(StorySchema).parse(response.data.data.stories)
+                setStories(stories)
             }
         } catch {
             // silently fail — user can pull to refresh

@@ -1,9 +1,12 @@
-export type User = {
-    uid: string;
-    username: string;
-    profilePicture: string;
-    phoneNumber: string;
-};
+import { z } from "zod";
+
+export const UserSchema = z.object({
+    uid: z.string(),
+    username: z.string(),
+    profilePicture: z.string(),
+    phoneNumber: z.string(),
+});
+export type User = z.infer<typeof UserSchema>;
 
 export type AuthState = {
     user: User | null;

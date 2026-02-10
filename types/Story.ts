@@ -1,40 +1,49 @@
-export type HookType =
-    | "question"
-    | "shocking_fact"
-    | "mistake"
-    | "relatable_statement"
-    | "story_start";
+import { z } from "zod";
 
-export type Hook = {
-    text: string;
-    type: HookType;
-};
+export const HookTypeSchema = z.enum([
+    "question",
+    "shocking_fact",
+    "mistake",
+    "relatable_statement",
+    "story_start",
+]);
+export type HookType = z.infer<typeof HookTypeSchema>;
 
-export type CoreMessage = {
-    main_message: string;
-    problem: string;
-    resolution: string;
-    takeaway: string;
-};
+export const HookSchema = z.object({
+    text: z.string(),
+    type: HookTypeSchema,
+});
+export type Hook = z.infer<typeof HookSchema>;
 
-export type ScriptSegment = {
-    order: number;
-    narration: string;
-    visual_idea: string;
-    image_prompt_seed: string;
-};
+export const CoreMessageSchema = z.object({
+    main_message: z.string(),
+    problem: z.string(),
+    resolution: z.string(),
+    takeaway: z.string(),
+});
+export type CoreMessage = z.infer<typeof CoreMessageSchema>;
 
-export type Script = {
-    title: string;
-    intent: string;
-    hook: Hook;
-    message: CoreMessage;
-    segments: ScriptSegment[];
-    hashtags: string[];
-    estimated_total_duration: number;
-};
+export const ScriptSegmentSchema = z.object({
+    order: z.number(),
+    narration: z.string(),
+    visual_idea: z.string(),
+    image_prompt_seed: z.string(),
+});
+export type ScriptSegment = z.infer<typeof ScriptSegmentSchema>;
 
-export type Story = {
-    id: string;
-    script: Script;
-};
+export const ScriptSchema = z.object({
+    title: z.string(),
+    intent: z.string(),
+    hook: HookSchema,
+    message: CoreMessageSchema,
+    segments: z.array(ScriptSegmentSchema),
+    hashtags: z.array(z.string()),
+    estimated_total_duration: z.number(),
+});
+export type Script = z.infer<typeof ScriptSchema>;
+
+export const StorySchema = z.object({
+    id: z.string(),
+    script: ScriptSchema,
+});
+export type Story = z.infer<typeof StorySchema>;
