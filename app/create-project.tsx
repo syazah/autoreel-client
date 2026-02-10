@@ -19,19 +19,19 @@ import Animated, {
 } from "react-native-reanimated";
 import { router } from "expo-router";
 import ScrollWheelPicker from "../components/create-project/ScrollWheelPicker";
-import { ProjectSchema } from "../types/Project";
+import { AllCategories, CategoryColors, ProjectSchema } from "../types/Project";
 import type { Category } from "../types/Project";
 import api from "../config/axios";
+import AppButton from "../components/AppButton";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const FREQUENCIES = [1, 2, 3, 4, 5, 6, 7];
-const CATEGORIES: Category[] = ["Children", "Informative", "Fiction"];
-const CATEGORY_COLORS = ["#FFB6C1", "#B0D4F1", "#C4B5FD"];
+const CATEGORY_COLOR_ARRAY = AllCategories.map((c) => CategoryColors[c]);
 
 export default function CreateProject() {
   const [frequency, setFrequency] = useState(3);
-  const [category, setCategory] = useState<Category>("Informative");
+  const [category, setCategory] = useState<Category>(AllCategories[0]);
   const [projectName, setProjectName] = useState("");
 
   const translateX = useSharedValue(0);
@@ -44,8 +44,8 @@ export default function CreateProject() {
   const step2BgStyle = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(
       categoryColorIndex.value,
-      [0, 1, 2],
-      CATEGORY_COLORS
+      AllCategories.map((_, i) => i),
+      CATEGORY_COLOR_ARRAY
     ),
   }));
 
@@ -55,7 +55,7 @@ export default function CreateProject() {
 
   const handleCategorySelect = useCallback((cat: Category) => {
     setCategory(cat);
-    const idx = CATEGORIES.indexOf(cat);
+    const idx = AllCategories.indexOf(cat);
     categoryColorIndex.value = withTiming(idx, { duration: 300 });
   }, [categoryColorIndex]);
 
@@ -97,14 +97,7 @@ export default function CreateProject() {
                 defaultIndex={2}
               />
             </View>
-            <TouchableOpacity
-              onPress={() => handleNext(1)}
-              className="bg-secondary w-full py-4 rounded-full items-center"
-            >
-              <Text className="text-white text-lg font-roboto-semibold">
-                Next
-              </Text>
-            </TouchableOpacity>
+            <AppButton onPressHandler={() => handleNext(1)} width={320} buttonText="Next" />
           </SafeAreaView>
         </View>
 
@@ -118,23 +111,17 @@ export default function CreateProject() {
                 What category?
               </Text>
               <ScrollWheelPicker
-                items={CATEGORIES}
+                items={AllCategories}
                 renderLabel={(c) => c}
                 onSelect={handleCategorySelect}
                 defaultIndex={1}
-                textSize={60}
+                textSize={46}
                 containerWidth="100%"
                 padding={220}
               />
             </View>
-            <TouchableOpacity
-              onPress={() => handleNext(2)}
-              className="bg-secondary w-full py-4 rounded-full items-center"
-            >
-              <Text className="text-white text-lg font-roboto-semibold">
-                Next
-              </Text>
-            </TouchableOpacity>
+
+            <AppButton onPressHandler={() => handleNext(2)} width={320} buttonText="Next" />
           </SafeAreaView>
         </Animated.View>
 

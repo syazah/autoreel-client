@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FloatingCards from "../components/onboarding/FloatingCards";
 import { signInWithGoogle } from "../components/authentication/GoogleSignIn";
@@ -9,10 +9,13 @@ import * as SecureStore from 'expo-secure-store';
 import { useAuthStore } from "../store/authStore";
 import { router } from "expo-router";
 import { UserSchema } from "../types/User";
+import AppButton from "../components/AppButton";
+import LoadingScreen from "../components/LoadingScreen";
+import { useLoading } from "../context/LoadingContext";
 
 export default function Index() {
   const { setUser } = useAuthStore();
-
+  const { loadingState, setLoadingState } = useLoading()
   useEffect(() => {
     const checkExistingToken = async () => {
       const token = await SecureStore.getItemAsync(ENV.ACCESS_TOKEN_KEY);
@@ -25,6 +28,7 @@ export default function Index() {
 
   const handleGoogleSignIn = async () => {
     try {
+      setLoadingState({ isLoading: true });
       const idToken = await signInWithGoogle();
       const response = await axios.post(`${ENV.API_URL}/api/v1/auth/google`, {
         idToken,
@@ -36,14 +40,19 @@ export default function Index() {
       }
       await SecureStore.setItemAsync(ENV.ACCESS_TOKEN_KEY, data.accessToken);
       await SecureStore.setItemAsync(ENV.REFRESH_TOKEN_KEY, data.refreshToken);
+      console.log(data.user)
       const user = UserSchema.parse(data.user);
       setUser(user);
+      setLoadingState({ isLoading: false });
       return router.replace("/home")
     } catch (err) {
+      setLoadingState({ isLoading: false });
       Alert.alert("Sign in failed", err instanceof Error ? err.message : "Something went wrong. Please try again.");
     }
   };
-
+  if (loadingState.isLoading) {
+    return <LoadingScreen />
+  }
   return (
     <SafeAreaView className="flex-1 items-center justify-center bg-primary">
       <View className="w-full h-[50%]">
@@ -62,10 +71,8 @@ export default function Index() {
           We make sure you never miss a post.
         </Text>
 
-        <TouchableOpacity onPress={handleGoogleSignIn} activeOpacity={0.8} className="bg-secondary w-[90%] rounded-full p-4 mt-10">
-          <Text className="text-light text-center font-roboto text-xl">LESS GO</Text>
-        </TouchableOpacity>
+        <AppButton onPressHandler={handleGoogleSignIn} width={320} buttonText="GOOGLE SIGN IN" />
       </View>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 }

@@ -14,6 +14,7 @@ import {
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "../global.css";
+import { LoadingContextProvider } from "../context/LoadingContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,7 +42,9 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-    </Stack>
+    <LoadingContextProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+      </Stack>
+    </LoadingContextProvider>
   );
 }

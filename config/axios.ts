@@ -38,6 +38,7 @@ api.interceptors.response.use(
                 return Promise.reject(error);
             }
         }
+        await clearTokensAndRedirect();
         return Promise.reject(error);
     }
 );
