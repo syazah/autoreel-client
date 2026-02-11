@@ -23,7 +23,6 @@ export const ProjectSchema = z.object({
     name: z.string(),
     frequency: z.number(),
     category: CategorySchema,
-    createdAt: z.number(),
 });
 export type Project = z.infer<typeof ProjectSchema>;
 

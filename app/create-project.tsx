@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
   Dimensions,
   StatusBar,
   KeyboardAvoidingView,
@@ -87,8 +86,8 @@ export default function CreateProject() {
         <View style={{ width: SCREEN_WIDTH }} className="flex-1 bg-primary">
           <SafeAreaView className="flex-1 justify-between items-center px-6 pb-8">
             <View className="flex-1 justify-center items-center w-full">
-              <Text className="text-white text-3xl font-roboto-bold text-center mb-8">
-                How many videos{"\n"}per week?
+              <Text className="text-light/70 uppercase text-2xl font-roboto-light text-center">
+                Videos Per Week
               </Text>
               <ScrollWheelPicker
                 items={FREQUENCIES}
@@ -107,8 +106,8 @@ export default function CreateProject() {
         >
           <SafeAreaView className="flex-1 justify-between items-center px-6 pb-8">
             <View className="flex-1 justify-center items-center w-full">
-              <Text className="text-white text-3xl font-roboto-bold text-center mb-8">
-                What category?
+              <Text className="text-light/70 text-2xl font-roboto-light uppercase text-center mb-8">
+                Category Of POSTS
               </Text>
               <ScrollWheelPicker
                 items={AllCategories}
@@ -135,8 +134,8 @@ export default function CreateProject() {
               behavior={Platform.OS === "ios" ? "padding" : "height"}
               className="flex-1 justify-center items-center w-full"
             >
-              <Text className="text-white text-3xl font-roboto-bold text-center mb-8">
-                Name your project
+              <Text className="text-light/70 text-2xl font-roboto-light uppercase text-center mb-8">
+                Name Of Your Project
               </Text>
               <TextInput
                 value={projectName}
@@ -148,15 +147,7 @@ export default function CreateProject() {
                 autoFocus={false}
               />
             </KeyboardAvoidingView>
-            <TouchableOpacity
-              onPress={handleCreate}
-              disabled={projectName.trim().length === 0}
-              className={`w-full py-4 rounded-full items-center ${projectName.trim().length > 0 ? "bg-secondary" : "bg-secondary/40"}`}
-            >
-              <Text className="text-white text-lg font-roboto-semibold">
-                Create
-              </Text>
-            </TouchableOpacity>
+            <AppButton onPressHandler={handleCreate} width={320} buttonText="Create Project" />
           </SafeAreaView>
         </View>
       </Animated.View>

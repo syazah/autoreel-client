@@ -1,28 +1,66 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, Pressable, DimensionValue } from 'react-native'
 import React from 'react'
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
+import * as Haptics from 'expo-haptics'
 
-const AppButton = ({ buttonText, onPressHandler, width = 80, height = 60, icon }: {
+const SPRING_CONFIG = { damping: 14, stiffness: 200 }
+
+const AppButton = ({ buttonText, onPressHandler, width = '80%' as DimensionValue, height = 60, icon }: {
     onPressHandler: () => void,
     buttonText?: string,
-    width?: number,
+    width?: DimensionValue,
     height?: number,
     icon?: React.ReactNode,
 }) => {
+    const scale = useSharedValue(1)
+    const shadowOffsetY = useSharedValue(4)
+
+    const animatedButtonStyle = useAnimatedStyle(() => ({
+        transform: [{ scale: scale.value }],
+    }))
+
+    const animatedShadowStyle = useAnimatedStyle(() => ({
+        transform: [{ translateY: shadowOffsetY.value }],
+    }))
+
+    const onPressIn = () => {
+        scale.value = withSpring(0.80, SPRING_CONFIG)
+        shadowOffsetY.value = withSpring(2, SPRING_CONFIG)
+    }
+
+    const onPressOut = () => {
+        scale.value = withSpring(1, SPRING_CONFIG)
+        shadowOffsetY.value = withSpring(4, SPRING_CONFIG)
+    }
+
+    const handlePress = () => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+        onPressHandler()
+    }
+
+    // Compute shadow dimensions based on width type
+    const shadowWidth = typeof width === 'number' ? width + 4 : width
+
     return (
-        <View className="w-full justify-center items-center relative">
-            <View
-                style={{ width: width + 4, height: height + 16 }}
-                className={`absolute -bottom-4 rounded-xl bg-secondary mt-10 transition-all duration-500`}>
-            </View>
-            <TouchableOpacity
-                onPress={onPressHandler}
-                activeOpacity={1}
-                style={{ width: width, height }}
-                className="bg-primary rounded-xl flex justify-center items-center mt-10 z-10 flex-row gap-2">
+        <Animated.View style={animatedButtonStyle} className="w-full justify-center items-center relative">
+            <Animated.View
+                style={[
+                    { width: shadowWidth, height: height + 16 },
+                    animatedShadowStyle,
+                ]}
+                className="absolute rounded-xl bg-secondary mt-10"
+            />
+            <Pressable
+                onPress={handlePress}
+                onPressIn={onPressIn}
+                onPressOut={onPressOut}
+                style={{ width, height }}
+                className="bg-primary rounded-xl flex justify-center items-center mt-10 z-10 flex-row gap-2"
+            >
                 {icon}
                 {buttonText && <Text className="text-light text-center font-roboto-bold text-2xl">{buttonText}</Text>}
-            </TouchableOpacity>
-        </View >
+            </Pressable>
+        </Animated.View>
     )
 }
 export default AppButton

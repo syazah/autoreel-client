@@ -12,9 +12,10 @@ export type PromptsTabRef = {
 
 type PromptsTabProps = {
     projectId: string
+    onStoryPress?: (story: Story) => void
 }
 
-export default forwardRef<PromptsTabRef, PromptsTabProps>(function PromptsTab({ projectId }, ref) {
+export default forwardRef<PromptsTabRef, PromptsTabProps>(function PromptsTab({ projectId, onStoryPress }, ref) {
     const [stories, setStories] = useState<Story[]>([])
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
@@ -69,7 +70,9 @@ export default forwardRef<PromptsTabRef, PromptsTabProps>(function PromptsTab({ 
         <FlatList
             data={stories}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <StoryCard story={item} />}
+            renderItem={({ item }) => (
+                <StoryCard story={item} onPress={() => onStoryPress?.(item)} />
+            )}
             contentContainerStyle={{ padding: 20, paddingBottom: 100 }}
             refreshControl={
                 <RefreshControl

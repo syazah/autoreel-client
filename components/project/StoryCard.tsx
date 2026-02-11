@@ -1,5 +1,6 @@
-import { View, Text } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import type { Story } from '../../types/Story'
+import Tablets from '../Tablets'
 
 const HOOK_LABELS: Record<string, string> = {
     question: 'Question',
@@ -11,9 +12,10 @@ const HOOK_LABELS: Record<string, string> = {
 
 type StoryCardProps = {
     story: Story
+    onPress?: () => void
 }
 
-export default function StoryCard({ story }: StoryCardProps) {
+export default function StoryCard({ story, onPress }: StoryCardProps) {
     const { script } = story
     const durationSec = Math.round(script.estimated_total_duration)
     const hookLabel = HOOK_LABELS[script.hook.type] ?? script.hook.type
@@ -21,34 +23,22 @@ export default function StoryCard({ story }: StoryCardProps) {
     const remaining = script.hashtags.length - visibleHashtags.length
 
     return (
-        <View className="bg-[#2A2A2A] rounded-2xl p-4 mb-3">
+        <Pressable onPress={onPress} className="bg-light/10 rounded-xl p-4 mb-3">
             {/* Title */}
-            <Text className="text-light font-roboto-bold text-base mb-2" numberOfLines={2}>
+            <Text className="text-light font-roboto-medium text-lg mb-2" numberOfLines={2}>
                 {script.title}
             </Text>
 
             {/* Hook text */}
-            <Text className="text-light/60 font-roboto text-sm mb-3" numberOfLines={2}>
+            <Text className="text-light/60 font-roboto-light text-sm mb-3" numberOfLines={2}>
                 {script.hook.text}
             </Text>
 
             {/* Badges row */}
             <View className="flex-row items-center flex-wrap gap-2 mb-3">
-                <View className="bg-secondary/20 rounded-full px-3 py-1">
-                    <Text className="text-secondary font-roboto-medium text-xs">
-                        {hookLabel}
-                    </Text>
-                </View>
-                <View className="bg-white/10 rounded-full px-3 py-1">
-                    <Text className="text-light/70 font-roboto-medium text-xs">
-                        ~{durationSec}s
-                    </Text>
-                </View>
-                <View className="bg-white/10 rounded-full px-3 py-1">
-                    <Text className="text-light/70 font-roboto-medium text-xs">
-                        {script.segments.length} segment{script.segments.length !== 1 ? 's' : ''}
-                    </Text>
-                </View>
+                <Tablets text={<Text className="text-secondary font-roboto-medium text-xs">{hookLabel}</Text>} />
+                <Tablets text={<Text className="text-light/70 font-roboto-medium text-xs">~{durationSec}s</Text>} />
+                <Tablets text={<Text className="text-light/70 font-roboto-medium text-xs">{script.segments.length} segment{script.segments.length !== 1 ? 's' : ''}</Text>} />
             </View>
 
             {/* Hashtags */}
@@ -70,6 +60,6 @@ export default function StoryCard({ story }: StoryCardProps) {
                     )}
                 </View>
             )}
-        </View>
+        </Pressable>
     )
 }

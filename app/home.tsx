@@ -6,7 +6,7 @@ import { useAuthStore } from '../store/authStore'
 import api from '../config/axios'
 import { FlashList } from '@shopify/flash-list'
 import { z } from 'zod'
-import { AllCategories, ProjectSchema } from '../types/Project'
+import { AllCategories, CategoryColors, ProjectSchema } from '../types/Project'
 import type { Category, Project } from '../types/Project'
 import { UserSchema } from '../types/User'
 import { useProjectStore } from '../store/projectStore'
@@ -36,24 +36,23 @@ function ProjectCard({ project }: { project: Project }) {
                 setProject(project)
                 router.push(`/project/${project.id}`)
             }}
-            className="mb-3 rounded-2xl overflow-hidden"
+            className="mb-3 rounded-lg overflow-hidden w-full bg-light/10"
         >
-            <View className="flex-row items-center p-4">
-                <View className="w-12 h-12 rounded-xl bg-white/40 justify-center items-center mr-4">
-                </View>
-                <View className="flex-1">
-                    <Text className="text-primary text-lg font-roboto-semibold" numberOfLines={1}>
+            <View className="flex-row w-full justify-between items-center p-4">
+                <View className="flex-1 gap-8">
+                    <Text className="text-light/70 text-3xl font-roboto-light" numberOfLines={1}>
                         {project.name}
                     </Text>
                     <View className="flex-row items-center mt-1 gap-3">
-                        <View className="flex-row items-center gap-1">
-                            <Text className="text-sm font-roboto-medium text-zinc-600">{project.category}</Text>
-                        </View>
-                        <View className="flex-row items-center gap-1">
-                            <Text className="text-sm font-roboto-medium text-zinc-600">{project.frequency}x/week</Text>
-                        </View>
+                        <Tablets
+                            text={<Text className="text-sm font-roboto-extralight text-light">{project.category}</Text>}
+                        />
+                        <Tablets
+                            text={<Text className="text-sm font-roboto-extralight text-light">{project.frequency}x/week</Text>}
+                        />
                     </View>
                 </View>
+                <View className='flex-1 justify-center items-end'><AntDesign name="caret-right" size={24} color={CategoryColors[project.category]} /></View>
             </View>
         </TouchableOpacity>
     );
@@ -63,7 +62,7 @@ const Home = () => {
     const { user, setUser, logout } = useAuthStore()
     const [projects, setProjects] = useState<Project[]>([])
     const [refreshing, setRefreshing] = useState(false)
-    const { loadingState, setLoadingState } = useLoading()
+    const { setLoadingState } = useLoading()
     const [currentCategory, setCurrentCategory] = useState<Category | null>(null)
 
     const fetchUserData = useCallback(async () => {
@@ -119,6 +118,7 @@ const Home = () => {
             fetchUserData()
         }
     }, [user, fetchUserData])
+
 
     if (user === null) {
         return <LoadingScreen />
