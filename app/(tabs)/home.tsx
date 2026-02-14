@@ -55,7 +55,6 @@ const Home = () => {
             }
         } catch (error) {
             setLoading(false)
-            console.log("Error fetching trends:", error)
             Alert.alert("Failed to Fetch Trends", "Unable to fetch trending videos. Please try again later.")
         }
     }
