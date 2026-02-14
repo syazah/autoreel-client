@@ -6,6 +6,8 @@ export const UserSchema = z.object({
     profilePicture: z.string(),
     phoneNumber: z.string(),
     name: z.string(),
+    frequency: z.number().optional(),
+    isOnboarded: z.boolean().optional(),
 });
 export type User = z.infer<typeof UserSchema>;
 

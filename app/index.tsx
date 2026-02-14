@@ -12,16 +12,31 @@ import { UserSchema } from "../types/User";
 import AppButton from "../components/AppButton";
 import LoadingScreen from "../components/LoadingScreen";
 import { useLoading } from "../context/LoadingContext";
+import api from "../config/axios";
 
 export default function Index() {
-  const { setUser } = useAuthStore();
+  const { setUser, user } = useAuthStore();
   const { loadingState, setLoadingState } = useLoading()
   useEffect(() => {
     const checkExistingToken = async () => {
+      setLoadingState({ isLoading: true });
       const token = await SecureStore.getItemAsync(ENV.ACCESS_TOKEN_KEY);
-      if (token) {
-        router.replace("/home");
+      if (token && !user) {
+        try {
+          const response = await api.get('/api/v1/auth/user');
+          const { data } = response.data;
+          const user = UserSchema.parse(data.user);
+          setUser(user);
+          if (user.isOnboarded) {
+            router.replace("/(tabs)/home");
+          } else {
+            router.replace("/onboarding");
+          }
+        } catch {
+          router.replace("/(tabs)/home");
+        }
       }
+      setLoadingState({ isLoading: false });
     };
     checkExistingToken();
   }, []);
@@ -40,11 +55,14 @@ export default function Index() {
       }
       await SecureStore.setItemAsync(ENV.ACCESS_TOKEN_KEY, data.accessToken);
       await SecureStore.setItemAsync(ENV.REFRESH_TOKEN_KEY, data.refreshToken);
-      console.log(data.user)
       const user = UserSchema.parse(data.user);
       setUser(user);
       setLoadingState({ isLoading: false });
-      return router.replace("/home")
+      if (user.isOnboarded) {
+        return router.replace("/(tabs)/home");
+      } else {
+        return router.replace("/onboarding");
+      }
     } catch (err) {
       setLoadingState({ isLoading: false });
       Alert.alert("Sign in failed", err instanceof Error ? err.message : "Something went wrong. Please try again.");
