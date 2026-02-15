@@ -113,7 +113,7 @@ const Home = () => {
                     <Text className='font-roboto-light text-light/50 tracking-widest uppercase'>Trending</Text>
                     <TouchableOpacity className='flex flex-row gap-1 justify-center items-center' onPress={() => router.push("/trending")}>
                         <Text className='font-roboto-light text-light/50 tracking-widest uppercase flex flex-row justify-center items-center'>View All</Text>
-                        <AntDesign name="caret-right" size={12} color="#008BFF" />
+                        <AntDesign name="caret-right" size={12} color="#DE7356" />
                     </TouchableOpacity>
 
                 </View>

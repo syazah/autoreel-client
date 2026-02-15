@@ -6,6 +6,8 @@ import api from "../../config/axios"
 import { ENV } from "../../config/env"
 import { PlanTopic } from "../../types/plan"
 import LoadingPlanSkeleton from "../../components/plan/LoadingPlanSkeleton"
+import { usePlanStore } from "../../store/planStore"
+import { VideoSchemaType } from "../../types/Video"
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -38,11 +40,11 @@ function formatDateString(d: Date): string {
 
 export default function Plan() {
     const dates = useMemo(() => getNext7Days(), [])
-    const [planForDate, setPlanForDate] = useState<PlanTopic | null>(null)
+    const [planForDate, setPlanForDate] = useState<PlanTopic & VideoSchemaType | null>(null)
     const [loadingPlan, setLoadingPlan] = useState<boolean>(false)
     const [selectedDate, setSelectedDate] = useState<Date>(dates[0])
     const today = useMemo(() => new Date(), [])
-
+    const { plans, setPlan } = usePlanStore()
     const [scriptModalVisible, setScriptModalVisible] = useState(false)
     const [streamedScript, setStreamedScript] = useState("")
     const [isGenerating, setIsGenerating] = useState(false)
@@ -51,18 +53,27 @@ export default function Plan() {
 
     const getPlanForDate = async (d: Date): Promise<any> => {
         setLoadingPlan(true)
+        const formattedDate = formatDateString(d)
+        const existingPlan = plans && plans.find(x => x.date === formattedDate)?.plan
+        if (existingPlan) {
+            setPlanForDate(existingPlan)
+            setLoadingPlan(false)
+            return
+        }
         const dateString = formatDateString(d)
         const response = await api.post("/api/v1/plan/date", { date: dateString })
-        console.log(response.data)
+
         if (response.status !== 200) {
             setLoadingPlan(false)
             return Alert.alert("Error", "Failed to fetch plan for the selected date")
         }
+
         const planData = response.data.data.plans
+        setPlan(dateString, planData)
         setLoadingPlan(false)
         setPlanForDate(planData)
     }
-
+    console.log(planForDate)
     const handleGenerateScript = useCallback(async () => {
         setStreamedScript("")
         setScriptModalVisible(true)
@@ -86,25 +97,17 @@ export default function Plan() {
             const newText = xhr.responseText.substring(processedLength)
             processedLength = xhr.responseText.length
 
-            const lines = newText.split("\n")
+            // Backend sends raw chunks separated by \n\n, with "data: [DONE]" at the end
+            const parts = newText.split("\n\n")
             let accumulated = ""
-            for (const line of lines) {
-                const trimmed = line.trim()
-                if (trimmed.startsWith("data: ")) {
-                    const payload = trimmed.slice(6)
-                    if (payload === "[DONE]") {
-                        setIsGenerating(false)
-                        continue
-                    }
-                    try {
-                        const parsed = JSON.parse(payload)
-                        if (parsed.content) {
-                            accumulated += parsed.content
-                        }
-                    } catch {
-                        // ignore malformed chunks
-                    }
+            for (const part of parts) {
+                const trimmed = part.trim()
+                if (!trimmed) continue
+                if (trimmed === "data: [DONE]") {
+                    setIsGenerating(false)
+                    continue
                 }
+                accumulated += trimmed
             }
             if (accumulated) {
                 setStreamedScript((prev) => prev + accumulated)
@@ -201,6 +204,9 @@ export default function Plan() {
                         <TouchableOpacity onPress={handleGenerateScript} className="rounded-full bg-secondary px-4 py-2 mt-6">
                             <Text className="text-primary">Generate Script</Text>
                         </TouchableOpacity>
+                        {planForDate?.script && <TouchableOpacity onPress={handleGenerateScript} className="rounded-full bg-secondary px-4 py-2 mt-6">
+                            <Text className="text-primary">View Script</Text>
+                        </TouchableOpacity>}
                     </View>
 
                 </View>}
@@ -210,7 +216,7 @@ export default function Plan() {
             <Modal
                 visible={scriptModalVisible}
                 animationType="slide"
-                presentationStyle="fullScreen"
+
                 onRequestClose={handleCloseModal}
             >
                 <SafeAreaView className="flex-1 bg-primary">
