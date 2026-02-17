@@ -99,7 +99,7 @@ const Home = () => {
                     <TouchableOpacity onPress={handleLogout}>
                         <Image className="w-10 h-10 rounded-full" source={{ uri: user.profilePicture }} />
                     </TouchableOpacity>
-                    <Text className='text-white text-lg font-roboto-medium'>Hello, {user.name.split(" ")[0]}!</Text>
+                    <Text className='text-tertiary text-lg font-sansserif-medium'>Hello, {user.name.split(" ")[0]}!</Text>
                 </View>
                 <View className='flex flex-row justify-end items-center'>
                     <Tablets icon={<Image className='w-6 h-6' source={require("../../assets/stickers/coin.png")} />} text={<Text className='font-roboto-black text-white text-2xl'>
@@ -110,9 +110,9 @@ const Home = () => {
 
             <View className='w-full flex justify-start items-start p-4'>
                 <View className='w-full flex flex-row justify-between items-center'>
-                    <Text className='font-roboto-light text-light/50 tracking-widest uppercase'>Trending</Text>
+                    <Text className='font-roboto-light text-tertiary/70 tracking-widest uppercase'>Trending</Text>
                     <TouchableOpacity className='flex flex-row gap-1 justify-center items-center' onPress={() => router.push("/trending")}>
-                        <Text className='font-roboto-light text-light/50 tracking-widest uppercase flex flex-row justify-center items-center'>View All</Text>
+                        <Text className='font-roboto-light text-tertiary/70 tracking-widest uppercase flex flex-row justify-center items-center'>View All</Text>
                         <AntDesign name="caret-right" size={12} color="#DE7356" />
                     </TouchableOpacity>
 

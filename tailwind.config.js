@@ -6,10 +6,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#222222",
-        secondary: "#008BFF",
-        light: "#FAF3E1",
-        tertiary: "#F5E7C6",
+        primary: "#ffffff",
+        secondary: "#c15f3c",
+        primaryDark: "#f4f3ee",
+        tertiary: "#444",
       },
       fontFamily: {
         roboto: ["Roboto_400Regular"],
@@ -21,6 +21,15 @@ module.exports = {
         "roboto-semibold": ["Roboto_600SemiBold"],
         "roboto-black": ["Roboto_900Black"],
         "roboto-extrabold": ["Roboto_800ExtraBold"],
+        "notoserif-thin": ["NotoSerif_100Thin"],
+        "notoserif-extralight": ["NotoSerif_200ExtraLight"],
+        "notoserif-light": ["NotoSerif_300Light"],
+        "notoserif-regular": ["NotoSerif_400Regular"],
+        "notoserif-medium": ["NotoSerif_500Medium"],
+        "notoserif-semibold": ["NotoSerif_600SemiBold"],
+        "notoserif-bold": ["NotoSerif_700Bold"],
+        "notoserif-extrabold": ["NotoSerif_800ExtraBold"],
+        "notoserif-black": ["NotoSerif_900Black"],
       },
     },
   },

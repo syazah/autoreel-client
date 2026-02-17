@@ -7,11 +7,11 @@ const SkeletonCard = () => (
     <View className='w-[200px] h-[300px] mr-3 rounded-2xl overflow-hidden' style={{ backgroundColor: '#2a2a2a' }}>
         <Skeleton
             isLoading={true}
-            boneColor='#333333'
-            highlightColor='#444444'
+            boneColor='#fff'
+            highlightColor='#f4f3ee'
             containerStyle={{ flex: 1 }}
         >
-            <View style={{ width: 200, height: 300, backgroundColor: '#333333' }} />
+            <View style={{ width: 200, height: 300, backgroundColor: '#eee' }} />
         </Skeleton>
     </View>
 )

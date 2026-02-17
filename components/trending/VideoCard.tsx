@@ -38,7 +38,6 @@ const VideoCard = ({ video }: { video: CategorizedVideo }) => {
                         </Text>
                     </View>
                     <View className='flex-row items-center gap-1'>
-                        <AntDesign name="like2" size={10} color="rgba(250,243,225,0.4)" />
                         <Text className='text-light/40 text-[10px] font-roboto-light'>
                             {formatViews(video.metrics.likes)}
                         </Text>

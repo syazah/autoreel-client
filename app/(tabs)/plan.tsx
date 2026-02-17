@@ -147,7 +147,7 @@ export default function Plan() {
         <SafeAreaView className="flex-1 bg-primary">
             {/* Header */}
             <View className="px-4 pt-2 pb-4">
-                <Text className="text-light/50 text-xl font-roboto-light uppercase">YOUR Content Plan</Text>
+                <Text className="text-tertiary/70 text-xl font-sansserif-thin uppercase">YOUR Content Plan</Text>
             </View>
 
             {/* Calendar strip */}
@@ -168,7 +168,7 @@ export default function Plan() {
                                 getPlanForDate(date)
                                 setSelectedDate(date)
                             }}
-                            className={`items-center py-3 px-4 rounded-2xl w-20 h-32 ${isSelected ? "bg-[#008BFF]" : "bg-[#2a2a2a]"}`}
+                            className={`items-center py-3 px-4 rounded-2xl w-20 h-32 ${isSelected ? "bg-secondary" : "bg-primaryDark"}`}
                         >
                             <Text className={`text-[10px] font-roboto-light uppercase tracking-widest ${isSelected ? "text-white" : "text-light/40"}`}>
                                 {DAYS[date.getDay()]}
@@ -180,7 +180,7 @@ export default function Plan() {
                                 {MONTHS[date.getMonth()]}
                             </Text>
                             {isToday && (
-                                <View className={`w-1.5 h-1.5 rounded-full mt-1.5 ${isSelected ? "bg-white" : "bg-[#008BFF]"}`} />
+                                <View className={`w-1.5 h-1.5 rounded-full mt-1.5 ${isSelected ? "bg-white" : "bg-secondary"}`} />
                             )}
                         </TouchableOpacity>
                     )
@@ -238,7 +238,7 @@ export default function Plan() {
                     >
                         <Text className="text-light/80 font-roboto-light text-base leading-7">
                             {streamedScript}
-                            {isGenerating && <Text className="text-[#008BFF]">▊</Text>}
+                            {isGenerating && <Text className="text-secondary">▊</Text>}
                         </Text>
                         <View className="h-8" />
                     </ScrollView>

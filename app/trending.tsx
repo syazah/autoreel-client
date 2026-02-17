@@ -49,7 +49,7 @@ const Trending = () => {
                 {trends.trendingTopics.length > 0 && (
                     <>
                         <View className='px-4'>
-                            <SectionHeader title="Trending Topics" iconColor='#008BFF' icon="tags" count={trends.trendingTopics.length} />
+                            <SectionHeader title="Trending Topics" iconColor='#c15f3c' icon="tags" count={trends.trendingTopics.length} />
                         </View>
                         <ScrollView
                             horizontal
@@ -57,12 +57,12 @@ const Trending = () => {
                             contentContainerClassName='px-4 gap-2'
                         >
                             {trends.trendingTopics.map((topic) => (
-                                <View key={topic.topic} className='bg-[#2a2a2a] px-3 py-2 rounded-full flex-row items-center gap-2'>
+                                <View key={topic.topic} className='bg-primaryDark px-3 py-2 rounded-full flex-row items-center gap-2'>
                                     <Text className='text-light text-xs font-roboto-medium'>{topic.topic}</Text>
                                     <View className='bg-light/10 px-1.5 py-0.5 rounded-full'>
                                         <Text className='text-light/50 text-[9px] font-roboto-light'>{topic.count}</Text>
                                     </View>
-                                    <Text className='text-emerald-400 text-[9px] font-roboto-light'>
+                                    <Text className='text-emerald-800 text-[9px] font-roboto-light'>
                                         {(topic.avgEngagement * 100).toFixed(1)}%
                                     </Text>
                                 </View>
@@ -75,7 +75,7 @@ const Trending = () => {
                 {trends.engagementByHour.length > 0 && (
                     <>
                         <View className='px-4'>
-                            <SectionHeader title="Best Posting Hours" iconColor='#008BFF' icon="clock-circle" count={trends.engagementByHour.length} />
+                            <SectionHeader title="Best Posting Hours" iconColor='#c15f3c' icon="clock-circle" count={trends.engagementByHour.length} />
                         </View>
                         <ScrollView
                             horizontal
@@ -101,7 +101,7 @@ const Trending = () => {
 
                 {/* Viral Potential */}
                 <View className='px-4'>
-                    <SectionHeader title="Viral Potential" iconColor='#008BFF' icon="fire" count={trends.viralPotential.length} />
+                    <SectionHeader title="Viral Potential" iconColor='#c15f3c' icon="fire" count={trends.viralPotential.length} />
                 </View>
                 <ScrollView
                     horizontal
@@ -115,7 +115,7 @@ const Trending = () => {
 
                 {/* Rising Stars */}
                 <View className='px-4'>
-                    <SectionHeader title="Rising Stars" iconColor='#008BFF' icon="star" count={trends.risingStars.length} />
+                    <SectionHeader title="Rising Stars" iconColor='#c15f3c' icon="star" count={trends.risingStars.length} />
                 </View>
                 <ScrollView
                     horizontal
@@ -131,7 +131,7 @@ const Trending = () => {
                 {nicheKeys.length > 0 && (
                     <>
                         <View className='px-4 flex-row items-center justify-between'>
-                            <SectionHeader title="Niche Opportunities" iconColor='#008BFF' icon="api" count={nicheVideos.length} />
+                            <SectionHeader title="Niche Opportunities" iconColor='#c15f3c' icon="api" count={nicheVideos.length} />
                         </View>
 
                         {/* Dropdown trigger */}
@@ -168,13 +168,13 @@ const Trending = () => {
                                         keyExtractor={(item) => item}
                                         renderItem={({ item }) => (
                                             <TouchableOpacity
-                                                className={`px-4 py-3 flex-row items-center justify-between ${item === activeNiche ? 'bg-[#008BFF]/10' : ''}`}
+                                                className={`px-4 py-3 flex-row items-center justify-between ${item === activeNiche ? 'bg-secondary/10' : ''}`}
                                                 onPress={() => {
                                                     setSelectedNiche(item)
                                                     setShowNicheDropdown(false)
                                                 }}
                                             >
-                                                <Text className={`text-sm font-roboto-medium capitalize ${item === activeNiche ? 'text-[#008BFF]' : 'text-light'}`}>
+                                                <Text className={`text-sm font-roboto-medium capitalize ${item === activeNiche ? 'text-secondary' : 'text-light'}`}>
                                                     {item}
                                                 </Text>
                                                 <View className='bg-light/10 px-2 py-0.5 rounded-full'>

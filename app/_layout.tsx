@@ -11,6 +11,17 @@ import {
   Roboto_900Black,
   Roboto_800ExtraBold,
 } from "@expo-google-fonts/roboto";
+import {
+  NotoSerif_300Light,
+  NotoSerif_400Regular,
+  NotoSerif_500Medium,
+  NotoSerif_700Bold,
+  NotoSerif_100Thin,
+  NotoSerif_200ExtraLight,
+  NotoSerif_600SemiBold,
+  NotoSerif_900Black,
+  NotoSerif_800ExtraBold,
+} from "@expo-google-fonts/noto-serif";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "../global.css";
@@ -28,7 +39,16 @@ export default function RootLayout() {
     Roboto_600SemiBold,
     Roboto_700Bold,
     Roboto_800ExtraBold,
-    Roboto_900Black
+    Roboto_900Black,
+    NotoSerif_100Thin,
+    NotoSerif_200ExtraLight,
+    NotoSerif_300Light,
+    NotoSerif_400Regular,
+    NotoSerif_500Medium,
+    NotoSerif_600SemiBold,
+    NotoSerif_700Bold,
+    NotoSerif_800ExtraBold,
+    NotoSerif_900Black,
   });
 
   useEffect(() => {

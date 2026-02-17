@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Alert, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FloatingCards from "../components/onboarding/FloatingCards";
@@ -77,14 +77,14 @@ export default function Index() {
         <FloatingCards />
       </View>
       <View className="w-full h-[50%] flex-1 justify-center items-center">
-        <Text className="font-roboto-black text-light text-[48px]">
+        <Text className="font-notosans-black text-secondary text-[48px]">
           Create Reels
         </Text>
-        <Text className="font-roboto-black text-light text-[48px] -mt-6">
+        <Text className="font-notosans-black text-secondary text-[48px] -mt-6">
           Faster & Better
         </Text>
 
-        <Text className="font-roboto-light text-light text-[16px] mt-6 text-center px-10">
+        <Text className="font-roboto-light text-tertiary text-[16px] mt-6 text-center px-10">
           Turn prompts into posted reels, from idea to live post in minutes.
           We make sure you never miss a post.
         </Text>
